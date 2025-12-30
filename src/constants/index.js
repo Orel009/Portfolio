@@ -15,10 +15,13 @@ import {
   docker,
   medicalMedia,
   konimbo,
+  mizrahi,
   saas,
   cart,
   JobInterviewAI,
   LearnToWrite,
+  LearningPlatform,
+  carShop,
   angular,
   net,
   sql,
@@ -127,33 +130,33 @@ const technologies = [
 
 const experiences = [
   {
-    title: "Konimbo – Website Support",
+    title: "Software Developer | API Automation (NestJS / Next.js)",
+    company_name: "Mizrahi-Tefahot Bank",
+    icon: mizrahi,
+    iconBg: "#E6DEDD",
+    date: "05/2025 – Present",
+    points: [
+      "Developing enterprise-grade banking solutions and internal developer tools to improve efficiency and accelerate delivery.Responsible for designing and maintaining scalable RESTful APIs in .NET, managing OpenAPI/Swagger specifications, and leading innovation in API automation.Played a key role in building a proprietary API Discovery & Automation platform using NestJS and Next.js, enabling visualization of system relationships, simplified creation and editing of API specs (even for non-technical staff), and ensuring API quality through validation, automated mapping, and integration with SwaggerHub — significantly improving DevEx and speeding development cycles.",
+    ],
+  },
+  {
+    title: "Web Support & Implementation Specialist",
     company_name: "Konimbo",
     icon: konimbo,
     iconBg: "#383E56",
-    date: "04/2024 - Present",
+    date: "04/2024 - 04/2025",
     points: [
-      "Comprehensive support for websites based on the Konimbo platform, including in-depth guidance and training on system usage, alongside handling technical fixes and custom adjustments. Specialized in advanced design and user experience enhancement using HTML, CSS, and JavaScript, tailoring solutions to meet each client’s unique needs for optimal system efficiency.",
+      "Providing comprehensive support for websites based on the Konimbo platform, including system training and guidance, technical troubleshooting, and custom adjustments. This also involves advanced design and enhancement of user experience using HTML, CSS, and JavaScript, tailored to each client's unique needs.",
     ],
   },
   {
-    title: "Digital Manager",
+    title: "Digital Manager & Technical Specialist",
     company_name: "Medical Media",
     icon: medicalMedia,
     iconBg: "#E6DEDD",
-    date: "08/2023 – 04/2024",
+    date: "12/2022 – 04/2024",
     points: [
-      "Digital manager specializing in the development and implementation of automated landing pages and personalized customer journeys. Extensive experience in digital marketing, leading creative campaigns that drive engagement and enhance user experience. Successfully managed virtual event projects with strong organizational and results-oriented project management skills.",
-    ],
-  },
-  {
-    title: "Training & Support",
-    company_name: "Medical Media",
-    icon: medicalMedia,
-    iconBg: "#383E56",
-    date: "12/2022 – 08/2023",
-    points: [
-      "Provided training and support at Medical Media, including onboarding and coaching managers and representatives on the company's systems. Delivered professional technical support to clients, monitored operations, and generated daily and quarterly reports to track company and representative performance, ensuring continuous improvement and goal achievement.",
+      "Joined the company as a Training & Support Specialist, responsible for onboarding managers and teams to the company’s systems, delivering advanced technical support, and producing analytical performance reports to drive operational improvement. In 2023, I was promoted to Digital Manager, where I led data-driven digital initiatives, developed and automated smart landing pages to improve conversion funnels, managed technology projects and virtual events, and defined clear technical scopes while continuously optimizing user experience and engagement based on performance analytics",
     ],
   },
 ];
@@ -208,6 +211,64 @@ const projects = [
     source_code_link: "https://github.com/Orel009/MediaCraftAI",
   },
   {
+    name: "Learning Platform (Angular / .NET / SQL)",
+    description:
+      "🎓 Smart Learning Platform – A dynamic web system for seamless course management and learning.🛠 Admin Control – Upload, organize, and manage courses effortlessly.📚 User Experience – Browse, save, and track learning progress with ease.",
+    tags: [
+      {
+        name: "Angular",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "TypeScript",
+        color: "green-text-gradient",
+      },
+      {
+        name: "css",
+        color: "pink-text-gradient",
+      },
+      {
+        name: ".NET",
+        color: "orange-text-gradient",
+      },
+      {
+        name: "SQL",
+        color: "yellow-text-gradient",
+      },
+    ],
+    image: LearningPlatform,
+    source_code_link: "https://github.com/Orel009/Learning-Platform.git",
+  },
+  {
+    name: "Car Sales Platform (Angular / .NET / SQL)",
+    description:
+      "🚗 Car Sales Platform – A sleek web app showcasing a detailed and organized vehicle catalog.🛠 Admin Control – Add, edit, and remove cars with full management access.📊 Smart Insights – View most-watched cars and real-time engagement stat",
+    tags: [
+      {
+        name: "Angular",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "TypeScript",
+        color: "green-text-gradient",
+      },
+      {
+        name: "css",
+        color: "pink-text-gradient",
+      },
+      {
+        name: ".NET",
+        color: "orange-text-gradient",
+      },
+      {
+        name: "SQL",
+        color: "yellow-text-gradient",
+      },
+    ],
+    image: carShop,
+    source_code_link: "https://github.com/Orel009/Car-store-.git",
+  },
+  {
     name: "Shop",
     description:
       "💻 Innovative Marketplace – A dynamic online shopping platform built with JavaScript at its core. 🛒 Effortless Shopping – Seamlessly add products to your cart, curate favorites, and complete purchases. ✨ Enhanced Experience – Designed for intuitive navigation, ensuring a smooth e-commerce journe",
@@ -251,7 +312,7 @@ const projects = [
   },
 
   {
-    name: "Learn ToW rite",
+    name: "Learn ToWrite",
     description:
       "📝 Learn to Write – Improve your writing skills with our interactive learning platform. ✏️ Practice Daily – Engage in structured exercises designed to enhance your writing abilities.📚 Master Techniques – Develop essential skills in various writing styles and techniques.",
     tags: [

@@ -25,11 +25,14 @@ import net from "./tech/net.png";
 import threejs from "./tech/threejs.svg";
 import konimbo from "./company/konimbo.png";
 import medicalMedia from "./company/medicalMedia.png";
-
+import mizrahi from "./company/mizrahi.png";
 import saas from "./saas.png";
 import cart from "./cart.png";
 import JobInterviewAI from "./JobInterviewAI.png";
 import LearnToWrite from "./LearnToWrite.png";
+import LearningPlatform from "./LearningPlatform.png";
+import carShop from "./carShop.png";
+
 
 export {
   logo,
@@ -58,8 +61,11 @@ export {
   threejs,
   konimbo,
   medicalMedia,
+  mizrahi,
   saas,
   cart,
   JobInterviewAI,
   LearnToWrite,
+  LearningPlatform,
+  carShop,
 };
