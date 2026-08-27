@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import {
@@ -10,6 +11,10 @@ import {
   Tech,
   Works,
 } from "./components";
+
+// Lazy so the three.js/r3f code for this purely decorative scene never
+// blocks first paint; loaded on demand rather than in the initial bundle.
+const StarsCanvas = lazy(() => import("./components/canvas/Stars"));
 
 const App = () => {
   return (
@@ -26,7 +31,12 @@ const App = () => {
             <Education />
             <Tech />
             <Works />
-            <Contact />
+            <div className="relative z-0">
+              <Contact />
+              <Suspense fallback={null}>
+                <StarsCanvas />
+              </Suspense>
+            </div>
           </main>
         </div>
       </MotionConfig>

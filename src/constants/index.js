@@ -31,9 +31,7 @@ export const personalInfo = {
   email: "orelll009@gmail.com",
   phone: "053-831-1626",
   githubUrl: "https://github.com/Orel009",
-  // No LinkedIn URL exists anywhere in the previous codebase to carry
-  // forward — see RENOVATION_REPORT.md. Leave null until supplied.
-  linkedinUrl: null,
+  linkedinUrl: "https://www.linkedin.com/in/orel-benbenista-37331b278/",
   cvUrl: "/Orel-Benbenista-CV.pdf",
 };
 
@@ -81,6 +79,12 @@ const services = [
   {
     title: "Frontend Developer",
     icon: creator,
+  },
+  // No matching icon asset exists for this one — see RENOVATION_REPORT.md.
+  // ServiceCard renders a placeholder badge instead of substituting an
+  // unrelated icon.
+  {
+    title: "AI Integration Engineer",
   },
 ];
 

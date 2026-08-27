@@ -3,6 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import PropTypes from "prop-types";
 import CanvasLoader from "../Loader";
+import CanvasErrorBoundary from "./CanvasErrorBoundary";
+import { isWebGLAvailable } from "../../utils/webgl";
 
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./desktop_pc/scene.gltf");
@@ -78,28 +80,30 @@ const ComputerCanvas = () => {
     };
   }, []);
 
-  if (isTiny) {
+  if (isTiny || !isWebGLAvailable()) {
     return <HeroFallback />;
   }
 
   return (
-    <Canvas
-      frameloop="demand"
-      shadows
-      dpr={isMobile ? 1 : [1, 2]}
-      camera={{ position: [20, 3, 5], fov: 25 }}
-      gl={{ preserveDrawingBuffer: true }}
-    >
-      <Suspense fallback={<CanvasLoader />}>
-        <OrbitControls
-          enableZoom={false}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
-        <Computers isMobile={isMobile} />
-      </Suspense>
-      <Preload all />
-    </Canvas>
+    <CanvasErrorBoundary fallback={<HeroFallback />}>
+      <Canvas
+        frameloop="demand"
+        shadows
+        dpr={isMobile ? 1 : [1, 2]}
+        camera={{ position: [20, 3, 5], fov: 25 }}
+        gl={{ preserveDrawingBuffer: true }}
+      >
+        <Suspense fallback={<CanvasLoader />}>
+          <OrbitControls
+            enableZoom={false}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 2}
+          />
+          <Computers isMobile={isMobile} />
+        </Suspense>
+        <Preload all />
+      </Canvas>
+    </CanvasErrorBoundary>
   );
 };
 

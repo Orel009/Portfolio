@@ -7,6 +7,15 @@ import { SectionWrapper } from "../hoc";
 import { services, aboutText } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 
+// Used when a service has no matching icon asset (see constants/index.js) —
+// an on-brand placeholder badge rather than a broken image or a borrowed,
+// unrelated icon.
+const ServiceIconPlaceholder = () => (
+  <div className="w-16 h-16 rounded-2xl border-2 border-accent flex items-center justify-center">
+    <span className="text-accent font-bold text-[18px]">AI</span>
+  </div>
+);
+
 const ServiceCard = ({ index, title, icon }) => (
   <Tilt
     options={{
@@ -21,11 +30,11 @@ const ServiceCard = ({ index, title, icon }) => (
       className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card"
     >
       <div className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
-        <img
-          src={icon}
-          alt=""
-          className="w-16 h-16 object-contain"
-        />
+        {icon ? (
+          <img src={icon} alt="" className="w-16 h-16 object-contain" />
+        ) : (
+          <ServiceIconPlaceholder />
+        )}
 
         <h3 className="text-white text-[20px] font-bold text-center">
           {title}
@@ -38,7 +47,7 @@ const ServiceCard = ({ index, title, icon }) => (
 ServiceCard.propTypes = {
   index: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
 };
 
 const About = () => {
