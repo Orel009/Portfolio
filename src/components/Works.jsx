@@ -32,16 +32,18 @@ const ProjectCard = ({
             className="w-full h-full object-cover rounded-2xl"
           />
           <div className="absolute inset-0 flex justify-end m-3">
-            <div
+            <button
+              type="button"
+              aria-label={`Open source code for ${name} on GitHub`}
               onClick={() => window.open(source_code_link, "_blank")}
-              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+              className="black-gradient w-11 h-11 rounded-full flex justify-center items-center"
             >
               <img
                 src={github}
-                alt="github"
+                alt=""
                 className="w-1/2 h-1/2 object-contain"
               />
-            </div>
+            </button>
           </div>
         </div>
         <div className="mt-5">
