@@ -42,13 +42,13 @@ const HeroFallback = () => (
       className="w-2/3 max-w-[220px] h-auto"
       role="img"
     >
-      <rect x="30" y="20" width="140" height="90" rx="8" fill="#151030" stroke="#915eff" strokeWidth="3" />
-      <rect x="42" y="32" width="116" height="66" rx="3" fill="#050816" />
-      <path d="M62 55 L50 65 L62 75" stroke="#915eff" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M138 55 L150 65 L138 75" stroke="#915eff" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M92 78 L108 52" stroke="#aaa6c3" strokeWidth="4" fill="none" strokeLinecap="round" />
-      <rect x="85" y="110" width="30" height="10" fill="#151030" />
-      <rect x="60" y="120" width="80" height="8" rx="4" fill="#151030" />
+      <rect x="30" y="20" width="140" height="90" rx="8" className="fill-tertiary stroke-accent" strokeWidth="3" />
+      <rect x="42" y="32" width="116" height="66" rx="3" className="fill-primary" />
+      <path d="M62 55 L50 65 L62 75" className="stroke-accent" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M138 55 L150 65 L138 75" className="stroke-accent" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M92 78 L108 52" className="stroke-secondary" strokeWidth="4" fill="none" strokeLinecap="round" />
+      <rect x="85" y="110" width="30" height="10" className="fill-tertiary" />
+      <rect x="60" y="120" width="80" height="8" rx="4" className="fill-tertiary" />
     </svg>
   </div>
 );

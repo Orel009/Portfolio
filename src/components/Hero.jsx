@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas";
 import { heroTagline, personalInfo } from "../constants";
@@ -10,22 +9,25 @@ const Hero = () => {
         className={`${styles.paddingX} absolute inset-0 top-[120px] max-w-7xl mx-auto flex flex-row items-start gap-5`}
       >
         <div className="flex flex-col justify-center items-center mt-5">
-          <div className="w-5 h-5 rounded-full bg-[#915eff]" />
+          <div className="w-5 h-5 rounded-full bg-accent" />
           <div className="w-1 sm:h-80 h-40 violet-gradient" />
         </div>
         <div>
           <h1 className={`${styles.heroHeadText} text-white`}>
             Hi, I&apos;m{" "}
-            <span className="text-[#915eff]">{personalInfo.firstName}</span>
+            <span className="text-accent">{personalInfo.firstName}</span>
           </h1>
-          <p className={`${styles.heroSubText} text-white-100 max-w-2xl`}>
+          <p className="text-accent text-fluid-lead font-semibold mt-2">
+            {personalInfo.role}
+          </p>
+          <p className={`${styles.heroSubText} max-w-2xl mt-3`}>
             {heroTagline.line1}
             <br className="sm:block hidden" /> {heroTagline.line2}
           </p>
           <a
             href={personalInfo.cvUrl}
             download
-            className="inline-flex items-center gap-2 mt-8 bg-[#915eff] hover:bg-[#7c4bdb] active:bg-[#6c3fc7] transition-colors text-white font-semibold text-fluid-body px-6 py-3 rounded-xl shadow-card"
+            className="inline-flex items-center gap-2 mt-8 bg-accent-hover hover:bg-accent-active active:bg-accent-pressed transition-colors text-white font-semibold text-fluid-body px-6 py-3 rounded-xl shadow-glow"
           >
             Download CV
           </a>
@@ -33,17 +35,13 @@ const Hero = () => {
       </div>
       <ComputersCanvas />
       <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center">
-        <a href="#about" className="p-3 -m-3 inline-block" aria-label="Scroll to About section">
+        <a
+          href="#about"
+          className="p-3 -m-3 inline-block"
+          aria-label="Scroll to About section"
+        >
           <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
-            <motion.div
-              animate={{ y: [0, 24, 0] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "loop",
-              }}
-              className="w-3 h-3 rounded-full bg-secondary mb-1"
-            />
+            <div className="w-3 h-3 rounded-full bg-secondary mb-1" />
           </div>
         </a>
       </div>

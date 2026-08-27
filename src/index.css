@@ -24,6 +24,22 @@ img {
   height: auto;
 }
 
+a,
+button,
+input,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  @apply ring-2 ring-accent ring-offset-2 ring-offset-primary rounded-sm;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

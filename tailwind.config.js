@@ -11,9 +11,19 @@ module.exports = {
         "black-100": "#100d25",
         "black-200": "#090325",
         "white-100": "#f3f3f3",
+        // `accent` is decorative/text-only (4.99:1 on bg-primary, fails AA
+        // as a background under white button text at 4.00:1) — buttons use
+        // the darker accent-hover/active/pressed ladder instead, each
+        // verified >=4.5:1 with white text. See RENOVATION_REPORT.md.
+        accent: "#915eff",
+        "accent-hover": "#7c4bdb",
+        "accent-active": "#6c3fc7",
+        "accent-pressed": "#5c33ad",
+        "accent-soft": "#dfd9ff",
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",
+        glow: "0px 0px 30px 0px rgba(145, 94, 255, 0.35)",
       },
       screens: {
         xxs: "380px",

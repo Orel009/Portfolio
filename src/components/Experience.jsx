@@ -11,10 +11,16 @@ import { SectionWrapper } from "../hoc";
 import { experiences } from "../constants";
 import { textVariant } from "../utils/motion";
 
+// react-vertical-timeline-component only accepts raw style objects, so this
+// can't be a Tailwind class — kept in sync with the `tertiary` token in
+// tailwind.config.js instead of an unrelated one-off hex value. Using the
+// same color for both also fixes the original arrow not matching its card.
+const TIMELINE_CARD_COLOR = "#151030";
+
 const ExperienceCard = ({ experience }) => (
   <VerticalTimelineElement
-    contentStyle={{ background: "#1d1836", color: "#fff" }}
-    contentArrowStyle={{ borderRight: "7px solid #232631" }}
+    contentStyle={{ background: TIMELINE_CARD_COLOR, color: "#fff" }}
+    contentArrowStyle={{ borderRight: `7px solid ${TIMELINE_CARD_COLOR}` }}
     date={experience.date}
     iconStyle={{ background: experience.iconBg }}
     icon={

@@ -38,7 +38,7 @@ export const personalInfo = {
 };
 
 export const heroTagline = {
-  line1: "Full Stack Engineer — deterministic logic decides, AI explains.",
+  line1: "Deterministic logic decides, AI explains.",
   line2:
     "Building a bank-wide API platform, and my own live AI investment-research platform.",
 };
