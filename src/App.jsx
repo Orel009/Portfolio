@@ -3,6 +3,7 @@ import { MotionConfig } from "framer-motion";
 import {
   About,
   Contact,
+  Education,
   Experience,
   Hero,
   Navbar,
@@ -21,6 +22,7 @@ const App = () => {
           </div>
           <About />
           <Experience />
+          <Education />
           <Tech />
           <Works />
           <Contact />

@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas";
+import { heroTagline, personalInfo } from "../constants";
+
 const Hero = () => {
   return (
     <section className="relative w-full h-screen mx-auto">
@@ -13,13 +15,20 @@ const Hero = () => {
         </div>
         <div>
           <h1 className={`${styles.heroHeadText} text-white`}>
-            Hi, I&apos;m <span className="text-[#915eff]">Orel</span>
+            Hi, I&apos;m{" "}
+            <span className="text-[#915eff]">{personalInfo.firstName}</span>
           </h1>
-          <p className={`${styles.heroSubText} text-white-100`}>
-            I&apos;m a Software Development Practical Engineer, who works with
-            user{" "}
-            <br className="sm:block hidden" /> interfaces and web applications.
+          <p className={`${styles.heroSubText} text-white-100 max-w-2xl`}>
+            {heroTagline.line1}
+            <br className="sm:block hidden" /> {heroTagline.line2}
           </p>
+          <a
+            href={personalInfo.cvUrl}
+            download
+            className="inline-flex items-center gap-2 mt-8 bg-[#915eff] hover:bg-[#7c4bdb] active:bg-[#6c3fc7] transition-colors text-white font-semibold text-fluid-body px-6 py-3 rounded-xl shadow-card"
+          >
+            Download CV
+          </a>
         </div>
       </div>
       <ComputersCanvas />

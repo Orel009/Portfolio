@@ -4,6 +4,7 @@ import emailjs from "@emailjs/browser";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
+import { personalInfo } from "../constants";
 
 const Contact = () => {
   const formRef = useRef();
@@ -30,9 +31,9 @@ const Contact = () => {
         "template_j6cdc55",
         {
           from_name: form.name,
-          to_name: "Orel Benbenista",
+          to_name: personalInfo.name,
           from_email: form.email,
-          to_email: "orelll009@gmail.com",
+          to_email: personalInfo.email,
           message: form.message,
         },
         "Pj59bt66seZ24aeXh"
@@ -64,7 +65,16 @@ const Contact = () => {
         className="w-full max-w-2xl bg-black-100 p-8 rounded-2xl"
       >
         <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={styles.sectionHeadText}>Contact.</h3>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h3 className={styles.sectionHeadText}>Contact.</h3>
+          <a
+            href={personalInfo.cvUrl}
+            download
+            className="inline-flex items-center gap-2 border border-secondary text-secondary hover:text-white hover:border-white transition-colors font-medium text-fluid-label px-5 py-3 rounded-xl"
+          >
+            Download CV
+          </a>
+        </div>
         <form
           ref={formRef}
           onSubmit={handleSubmit}

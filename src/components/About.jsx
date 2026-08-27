@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 
-import { services } from "../constants";
+import { services, aboutText } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 
 const ServiceCard = ({ index, title, icon }) => (
@@ -51,15 +51,9 @@ const About = () => {
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
+        className="mt-4 text-secondary text-fluid-body max-w-3xl leading-[30px]"
       >
-        Fullstack Developer with experience in building advanced systems using
-        modern technologies such as .NET Core, Angular 18, React, and Node.js.
-        Skilled in both server-side and client-side development, working with
-        databases (SQL and Entity Framework 8), and designing responsive and
-        efficient user interfaces with HTML, CSS, and JavaScript. Adept at
-        collaborating in professional teams, utilizing Git for version control,
-        and optimizing development workflows.
+        {aboutText}
       </motion.p>
 
       <div className="mt-20 flex flex-wrap gap-10">
