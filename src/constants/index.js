@@ -161,33 +161,6 @@ const experiences = [
   },
 ];
 
-const testimonials = [
-  {
-    testimonial:
-      "Orel’s coding skills are so sharp, I almost considered rewriting Windows in Angular. Almost.",
-    name: "Satya Nadella",
-    designation: "CEO",
-    company: "Microsoft",
-    image: "/src/assets/SatyaNadella.jpg",
-  },
-  {
-    testimonial:
-      "Orel is a full-stack wizard! His ability to craft seamless and scalable applications is truly out of this world. If I had him at SpaceX, we'd probably be coding our way to Mars by now!",
-    name: "Elon Musk",
-    designation: "CEO",
-    company: "Tesla & SpaceX",
-    image: "/src/assets/ElonMusk.jpg",
-  },
-  {
-    testimonial:
-      "I've worked with many developers, but Orel's expertise in React and Node.js is simply unparalleled. If Apple hired him, iOS would probably run on JavaScript by now!",
-    name: "Tim Cook",
-    designation: "CEO",
-    company: "Apple",
-    image: "/src/assets/TimCook.jpg",
-  },
-];
-
 const projects = [
   {
     name: "Saas AI",
@@ -334,4 +307,4 @@ const projects = [
   },
 ];
 
-export { services, technologies, experiences, testimonials, projects };
+export { services, technologies, experiences, projects };

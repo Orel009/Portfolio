@@ -16,5 +16,41 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // react-three-fiber elements (mesh, ambientLight, primitive, etc.) accept
+    // real three.js properties that aren't DOM attributes; without this list
+    // eslint-plugin-react treats every one of them as an unknown-property error.
+    'react/no-unknown-property': [
+      'error',
+      {
+        ignore: [
+          'args',
+          'object',
+          'position',
+          'position-y',
+          'rotation',
+          'rotation-y',
+          'scale',
+          'intensity',
+          'castShadow',
+          'receiveShadow',
+          'penumbra',
+          'angle',
+          'groundColor',
+          'shadow-mapSize',
+          'map',
+          'polygonOffset',
+          'polygonOffsetFactor',
+          'flatShading',
+          'dispose',
+          'transparent',
+        ],
+      },
+    ],
   },
+  overrides: [
+    {
+      files: ['*.config.js', '*.config.cjs'],
+      env: { node: true },
+    },
+  ],
 }

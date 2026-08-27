@@ -1,6 +1,7 @@
-import React, { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import PropTypes from "prop-types";
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
@@ -28,6 +29,10 @@ const Computers = ({ isMobile }) => {
   );
 };
 
+Computers.propTypes = {
+  isMobile: PropTypes.bool.isRequired,
+};
+
 const ComputerCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -36,17 +41,17 @@ const ComputerCanvas = () => {
 
     setIsMobile(mediaQuery.matches);
 
-    const hndleMediaQueryChange = (e) => setIsMobile(e.matches);
-    mediaQuery.addEventListener("change", hndleMediaQueryChange);
+    const handleMediaQueryChange = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
 
     return () => {
-      mediaQuery.removeEventListener("change", hndleMediaQueryChange);
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
   }, []);
 
   return (
     <Canvas
-      frameLoop="demand"
+      frameloop="demand"
       shadows
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}

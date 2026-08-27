@@ -1,9 +1,9 @@
-import React from "react";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 import "react-vertical-timeline-component/style.min.css";
 import { styles } from "../styles";
@@ -21,7 +21,7 @@ const ExperienceCard = ({ experience }) => (
       <div className="flex justify-center items-center w-full h-full">
         <img
           src={experience.icon}
-          alt={experience.comapany_name}
+          alt={experience.company_name}
           className="w-[60%] h-[60%] object-contain"
         />
       </div>
@@ -49,6 +49,17 @@ const ExperienceCard = ({ experience }) => (
   </VerticalTimelineElement>
 );
 
+ExperienceCard.propTypes = {
+  experience: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    company_name: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    iconBg: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    points: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
+};
+
 const Experience = () => {
   return (
     <>
@@ -59,7 +70,7 @@ const Experience = () => {
       <div className="mt-20 flex flex-col">
         <VerticalTimeline>
           {experiences.map((experience, index) => (
-            <ExperienceCard ket={index} experience={experience} />
+            <ExperienceCard key={index} experience={experience} />
           ))}
         </VerticalTimeline>
       </div>
@@ -67,4 +78,5 @@ const Experience = () => {
   );
 };
 
-export default SectionWrapper(Experience, "work");
+const WrappedExperience = SectionWrapper(Experience, "work");
+export default WrappedExperience;
