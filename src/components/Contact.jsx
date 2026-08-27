@@ -66,7 +66,7 @@ const Contact = () => {
       >
         <p className={styles.sectionSubText}>Get in touch</p>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h3 className={styles.sectionHeadText}>Contact.</h3>
+          <h2 className={styles.sectionHeadText}>Contact.</h2>
           <a
             href={personalInfo.cvUrl}
             download
