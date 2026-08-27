@@ -1,8 +1,13 @@
 # Renovation Report
 
-Branch: `renovation`, merged into `master` and pushed to origin (not deployed — that's yours to run). Base audit: `PORTFOLIO_AUDIT.md`.
+Branch: `master`. Everything through `f931b08` is merged and pushed to origin. The two commits
+below it (Resumes MVP card) are **committed locally only, not pushed** — waiting on your
+confirmation that the OpenAI key is revoked, per the working rule for this round. Base audit:
+`PORTFOLIO_AUDIT.md`.
 
 ```
+7d294d1 feat: add Resumes MVP project card, support multi-repo source links   <- not pushed
+f931b08 docs: update renovation report with follow-up round
 2fd0639 feat: wire real CV/LinkedIn, add AI role, restore Earth + Stars with guards
 84faa48 docs: add renovation report
 0d86101 docs: meta tags, favicon, semantic HTML, and final cleanup
@@ -148,6 +153,59 @@ Recovered both from git history (`git show c3607bb~1:...`, the commit right befo
 
 ---
 
+## Second follow-up round — Resumes MVP card + two-repo cleanup
+
+### What I reviewed
+Cloned and read three of your other repos (deleted the temp clones afterward, per your instruction): `ResumesMVP` (frontend), `ResumesMVPServer` (backend), and `Learning-Platform`. Full stack/scale/README findings are in the chat transcript for that request, not duplicated here — the short version:
+
+- **Resumes MVP**: a genuinely substantial two-sided career platform (~46k LOC combined, 286 files) — React 18/TS frontend, .NET 10 backend, PostgreSQL, JWT auth, an OpenAI-backed resume-polishing/job-fit pipeline, and a RAG layer (resume embeddings + semantic "smart search") for company-side candidate search. Added to the portfolio as a second featured card.
+- **Learning-Platform**: a modest, complete Angular/.NET course-CRUD app (~4.5k LOC). Per your call, **left out** — it's the same project already cut from this portfolio during the original renovation for reading as tutorial-scale next to your current work, and targeting React/.NET roles specifically means the Angular skill it would back up isn't worth widening that gap for.
+- **Found a live OpenAI API key committed in `ResumesMVPServer/appsettings.json`**, in a public repo. Flagged immediately, before doing anything else with the finding.
+
+### Portfolio: Resumes MVP card
+Added as the second **featured** project (after Financial Center), exactly as proposed and approved. `Works.jsx` changed to support a project spanning multiple repos:
+
+- `ProjectCard`/`FeaturedProjectCard`'s `source_code_link` (single string) became `sourceLinks` (an array of `{ label, url }`), rendered as one icon button per entry (each with its own `aria-label`, e.g. "Open Frontend source for Resumes MVP on GitHub"). Financial Center and API Discovery were migrated to the same field (`sourceLinks: null`) so there's only one code path, not two.
+- Verified in a real browser: the 0-link case (unchanged from before) and the 2-link case (new) both render correctly, with no broken images or console errors either way.
+- **The two repos are not linked live yet.** `sourceLinksVerified: false` on the Resumes MVP data entry gates rendering independently of whether the link data is present — I temporarily flipped it to `true` to verify the 2-button render worked, confirmed it, then flipped it back to `false` before committing. Confirmed off again right before the commit. **Do not flip this to `true` until you've confirmed back that (a) the OpenAI key is revoked and (b) both repos have been re-uploaded with clean history** (see below) — at that point, changing that one field in `src/constants/index.js` and redeploying is the entire remaining step.
+
+### Repo cleanup — ResumesMVP & ResumesMVPServer (local only, not pushed)
+Cloned fresh working copies to `C:\Users\Orell\Desktop\ResumesMVP` and `...\ResumesMVPServer` (kept, not deleted — these are meant to become your working copies going forward). Changes are committed locally in each; **neither was pushed.**
+
+**ResumesMVP (frontend)** — one commit, `chore: add .gitignore, untrack node_modules/dist, write real README`:
+- Added a `.gitignore` (there wasn't one at all) covering `node_modules/`, `dist/`, env files, editor/OS cruft.
+- Untracked the 14,109 already-committed `node_modules` files and `dist/` via `git rm --cached` (they stay on disk, just no longer tracked).
+- Replaced the one-line README with real docs: what it is, the stack, a feature list, and step-by-step local setup — pointing at the backend repo.
+- Verified `npm run build` still succeeds after these changes.
+
+**ResumesMVPServer (backend)** — one commit, `chore: repo hygiene pass — gitignore, secrets, README, DI fix`:
+- Expanded `.gitignore` to actually cover `bin/`, `obj/`, `out-temp/`, `.vs/`, `*.user` — a `.gitignore` already existed but only listed `bin/`/`obj/`/`.vs/`, and none of the three were actually excluded because they'd already been committed before the `.gitignore` was added (git doesn't retroactively untrack files). Untracked all 356+ of them via `git rm --cached`.
+- **Removed the live OpenAI key from `appsettings.json`** (now an empty placeholder) and added a `UserSecretsId` to the `.csproj` so the real key loads from .NET user-secrets in Development instead — ASP.NET Core's default host builder wires this up automatically once the ID is present, no code change needed beyond that. Documented the `dotnet user-secrets set` setup in the new README, along with the environment-variable equivalent for a real deployment.
+- Fixed `IJobApplicationService` being registered twice in `Program.cs`.
+- Replaced the one-line README with real docs, pointing at the frontend repo.
+- Verified `dotnet build` succeeds with 0 errors (2 pre-existing NuGet advisory warnings on a transitive `Microsoft.OpenApi` package — unrelated to this pass, not something I touched).
+- **Deliberately left alone** (out of scope for what you asked, noted in the new README instead): the CORS policy in `Program.cs` still targets a placeholder `"https://yourdomain.com"`, and `Jwt:Secret`/the Postgres connection string in `appsettings.json` are dev-only placeholder values (not real secrets, so not urgent) that should get the same user-secrets treatment before any real deployment.
+
+### Path to clean history — for you to run, not me
+
+Both repos currently have exactly one original commit, now followed by my one cleanup commit each — so the leaked key is still sitting in that first commit's history even though the current `appsettings.json` no longer has it. Since there's no meaningful history to preserve here, the cleanest fix is a full fresh start rather than surgically editing history. Per your instruction, here are the steps — I have not run any of these:
+
+For **each** repo (from inside `C:\Users\Orell\Desktop\ResumesMVP` and separately `...\ResumesMVPServer`):
+
+1. Confirm you're happy with the current state first: `git log --stat -1` (shows my cleanup commit) and `git status` (should be clean).
+2. Delete the entire git history: `rm -rf .git` (or `Remove-Item -Recurse -Force .git` in PowerShell).
+3. Start over: `git init` then `git branch -m main` (both repos' default branch on GitHub is already `main`).
+4. Re-stage everything — the new `.gitignore` will correctly exclude `node_modules`/`dist`/`bin`/`obj`/`.vs` this time: `git add -A`, then `git status` as a sanity check that none of those directories show up.
+5. One clean commit: `git commit -m "Initial commit"`.
+6. Point at the existing GitHub remote: `git remote add origin https://github.com/Orel009/ResumesMVP.git` (swap the URL for the server repo).
+7. Force-push, replacing the remote's history entirely: `git push -f origin main`.
+
+**Two things to know before you do this:**
+- This is irreversible on your end once pushed — the old commits are gone from the remote. That's the intent.
+- **Force-pushing a clean history does not itself undo the exposure.** GitHub actively scans public repos for recognizable API key patterns (OpenAI's `sk-` prefix is one it watches for) and may have already flagged or cached it, and any bot that scraped the repo in the time it was public already has the key regardless of what you do to history afterward. Revoking the key at platform level is the actual fix; the history rewrite is about hygiene and presentability going forward, not about undoing the leak. Worth checking your OpenAI dashboard for any usage you don't recognize, not just confirming the key shows as revoked.
+
+---
+
 ## Responsive verification — real numbers
 
 Measured via headless Chrome against the production build (`npm run build` + `vite preview`), after the follow-up round landed — this is the final, authoritative pass:
@@ -161,6 +219,18 @@ Measured via headless Chrome against the production build (`npm run build` + `vi
 | 1024px | equal | desktop links | live canvas, 1 | 0 |
 | 1440px | equal | desktop links | live canvas, 1 | 0 |
 | 1920px | equal | desktop links | live canvas, 1 | 0 |
+
+### Projects section, after adding the Resumes MVP card — measured, not calculated
+
+You asked for this re-measured with real numbers rather than the reasoning I gave in the proposal. Measured with dev tools (headless Chrome, `document.documentElement.scrollWidth`/`clientWidth`, and `getBoundingClientRect()` on each project card) at exactly the three widths you asked about:
+
+| Width | Overflow | Financial Center card | Resumes MVP card | API Discovery card | Overlap |
+|---|---|---|---|---|---|
+| 320px | none (320=320) | x:20 w:280 | x:20 w:280 | x:20 w:280 | none |
+| 768px | none (768=768) | x:31 w:707 | x:31 w:707 | x:31 w:360 | none |
+| 1440px | none (1440=1440) | x:138 w:1165 | x:138 w:1165 | x:138 w:360 | none |
+
+With Learning-Platform left out, there's only one standard-grid card (API Discovery) same as before this round — the two featured cards stack vertically regardless of width, which is why they don't interact with the grid-wrapping question at all. No overflow, no overlap, at any of the three widths. (My proposal's calculated 768px note — that a *second* standard card would wrap to one-per-row there — never got exercised, since Learning-Platform isn't in the data; noting that the reasoning wasn't wrong, just not applicable to what actually shipped.)
 
 Also re-verified at all 7 widths with the 5-card services grid and the Contact social-links row: no overflow anywhere, "AI Integration Engineer" (the longest title) doesn't wrap or reflow its card, both GitHub and LinkedIn icon links measure 44×44 at every width.
 
@@ -205,6 +275,7 @@ The restored starfield sits behind the entire Contact section on every breakpoin
 
 Resolved since the first draft of this report: the real CV is in place, and your LinkedIn URL is wired in. Still open:
 
+0. **Blocking the push:** confirm back here once (a) the OpenAI key is revoked in your OpenAI dashboard and (b) both `ResumesMVP` and `ResumesMVPServer` have been re-uploaded with clean history (steps above, yours to run). Once you confirm, I need to: flip `sourceLinksVerified: true` on the Resumes MVP entry in `src/constants/index.js`, then push `master` (currently 2 commits ahead of origin, held back specifically for this).
 1. **quant-center.com link.** It's live but sits behind HTTP Basic Auth. I did not link it, per your instruction. If you want it linked, my suggestion: a small secondary badge/link on the Financial Center card labeled something like **"Live Site (password-protected)"** with a lock glyph, rather than an unlabeled "Live Demo" button that would surprise a visitor with an unexpected credential prompt. Say the word and I'll wire it in.
 2. **11 skills/roles with no available icon asset:** NestJS, FastAPI (Python), Entity Framework Core, Vite, Next.js, Claude, Gemini, PostgreSQL, Caddy, Swagger/OpenAPI (render as text-only pills), plus **AI Integration Engineer** (renders with a small "AI" badge placeholder instead of a matching icon). If you have or want me to source proper icons for any of these, say which ones.
 3. **Three existing icon assets kept but currently unused, pending your call:**
