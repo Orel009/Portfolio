@@ -215,9 +215,15 @@ const education = [
   },
 ];
 
-// `image`, `source_code_link` and `live_link` are all optional — a project
-// with none of the three renders with a graceful placeholder instead of a
-// broken link or a blank image slot. See ProjectCard/FeaturedProjectCard.
+// `image`, `sourceLinks` and `live_link` are all optional — a project with
+// none of the three renders with a graceful placeholder instead of a broken
+// link or a blank image slot. See ProjectCard/FeaturedProjectCard.
+//
+// `sourceLinks` is an array (`{ label, url }`) since a project can span more
+// than one repo (frontend/backend). `sourceLinksVerified` gates whether
+// those links actually render (see Works.jsx's `visibleSourceLinks`) — set
+// it to `true` only once a repo is confirmed safe to point people at
+// (no live secrets in its history). See RENOVATION_REPORT.md.
 const projects = [
   {
     name: "Financial Center",
@@ -241,9 +247,31 @@ const projects = [
       "Gemini",
     ],
     image: null,
-    source_code_link: null,
+    sourceLinks: null,
     // quant-center.com is live but sits behind HTTP Basic Auth — holding off
     // on linking it until you confirm. See RENOVATION_REPORT.md.
+    live_link: null,
+  },
+  {
+    name: "Resumes MVP",
+    subtitle: "Two-Sided Career Platform — AI Resumes, Job Board & Candidate Search",
+    featured: true,
+    description:
+      "A two-sided career platform: candidates maintain a live public profile with AI-polished content across seven resume layouts and apply to jobs; companies post openings, manage the applicant pipeline, and search candidates through a semantic layer over resume embeddings alongside standard structured filters.",
+    highlights: [
+      "Candidate side: a live public profile (education, skills, work experience, languages) rendered through seven interchangeable resume layouts, AI-assisted resume polishing and job-fit analysis, and automatic parsing of an uploaded PDF resume.",
+      "Company side: job posting, a full applicant pipeline with statuses, notes and rejection templates, interview scheduling, and candidate folders.",
+      'Semantic candidate search: resume text is embedded and stored per candidate, with a RAG-backed "smart search" layered on top of standard filters, plus an admin analytics view over match quality.',
+    ],
+    tags: ["React", "TypeScript", ".NET 10", "PostgreSQL", "EF Core", "OpenAI API", "JWT"],
+    image: null,
+    sourceLinks: [
+      { label: "Frontend", url: "https://github.com/Orel009/ResumesMVP" },
+      { label: "Backend", url: "https://github.com/Orel009/ResumesMVPServer" },
+    ],
+    // Flip to true only once you've confirmed (1) the OpenAI key is revoked
+    // and (2) both repos have been re-uploaded clean. See RENOVATION_REPORT.md.
+    sourceLinksVerified: false,
     live_link: null,
   },
   {
@@ -255,7 +283,7 @@ const projects = [
     tags: ["NestJS", "Next.js", "TypeScript", "OpenAPI", "AI Agents"],
     image: null,
     // Proprietary work — no public repo and no link by design.
-    source_code_link: null,
+    sourceLinks: null,
     live_link: null,
   },
 ];

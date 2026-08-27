@@ -32,27 +32,41 @@ TagList.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-// A project with no source/live link renders no overlay at all, rather than
-// a button that opens `undefined`.
-const SourceLinkButton = ({ name, sourceCodeLink }) => {
-  if (!sourceCodeLink) return null;
+// A project can have zero, one, or several source repos (e.g. a separate
+// frontend/backend). No links renders no overlay at all, rather than a
+// button that opens `undefined`; one or many render as same-size icon
+// buttons in a row, each opening its own repo.
+const SourceLinksRow = ({ name, sourceLinks }) => {
+  if (!sourceLinks || sourceLinks.length === 0) return null;
   return (
-    <div className="absolute inset-0 flex justify-end m-3">
-      <button
-        type="button"
-        aria-label={`Open source code for ${name} on GitHub`}
-        onClick={() => window.open(sourceCodeLink, "_blank")}
-        className="black-gradient w-11 h-11 rounded-full flex justify-center items-center"
-      >
-        <img src={github} alt="" className="w-1/2 h-1/2 object-contain" />
-      </button>
+    <div className="absolute inset-0 flex justify-end items-start gap-2 m-3">
+      {sourceLinks.map((link) => (
+        <button
+          key={link.url}
+          type="button"
+          aria-label={
+            link.label
+              ? `Open ${link.label} source for ${name} on GitHub`
+              : `Open source code for ${name} on GitHub`
+          }
+          onClick={() => window.open(link.url, "_blank")}
+          className="black-gradient w-11 h-11 rounded-full flex justify-center items-center"
+        >
+          <img src={github} alt="" className="w-1/2 h-1/2 object-contain" />
+        </button>
+      ))}
     </div>
   );
 };
 
-SourceLinkButton.propTypes = {
+SourceLinksRow.propTypes = {
   name: PropTypes.string.isRequired,
-  sourceCodeLink: PropTypes.string,
+  sourceLinks: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      url: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 // Standing in for a real screenshot when a project has none (proprietary
@@ -70,14 +84,7 @@ ImagePlaceholder.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-const ProjectCard = ({
-  index,
-  name,
-  description,
-  tags,
-  image,
-  source_code_link,
-}) => {
+const ProjectCard = ({ index, name, description, tags, image, sourceLinks }) => {
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
       <Tilt
@@ -98,7 +105,7 @@ const ProjectCard = ({
           ) : (
             <ImagePlaceholder name={name} />
           )}
-          <SourceLinkButton name={name} sourceCodeLink={source_code_link} />
+          <SourceLinksRow name={name} sourceLinks={sourceLinks} />
         </div>
         <div className="mt-5">
           <h3 className="text-white font-bold text-[24px]">{name}</h3>
@@ -116,7 +123,7 @@ ProjectCard.propTypes = {
   description: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   image: PropTypes.string,
-  source_code_link: PropTypes.string,
+  sourceLinks: SourceLinksRow.propTypes.sourceLinks,
 };
 
 const FeaturedProjectCard = ({
@@ -126,7 +133,7 @@ const FeaturedProjectCard = ({
   highlights,
   tags,
   image,
-  source_code_link,
+  sourceLinks,
 }) => (
   <motion.div
     variants={fadeIn("up", "spring", 0, 0.75)}
@@ -142,7 +149,7 @@ const FeaturedProjectCard = ({
       ) : (
         <ImagePlaceholder name={name} />
       )}
-      <SourceLinkButton name={name} sourceCodeLink={source_code_link} />
+      <SourceLinksRow name={name} sourceLinks={sourceLinks} />
     </div>
     <div className="flex-1">
       <p className="text-secondary text-fluid-label uppercase tracking-wider">
@@ -172,8 +179,16 @@ FeaturedProjectCard.propTypes = {
   highlights: PropTypes.arrayOf(PropTypes.string).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   image: PropTypes.string,
-  source_code_link: PropTypes.string,
+  sourceLinks: SourceLinksRow.propTypes.sourceLinks,
 };
+
+// A project's sourceLinks only render once `sourceLinksVerified` is true —
+// see constants/index.js. Keeps the "don't link to a repo with a live
+// secret in its history" rule enforced at the data layer, not just by
+// remembering to fill in the field later.
+function visibleSourceLinks(project) {
+  return project.sourceLinksVerified ? project.sourceLinks : null;
+}
 
 const Works = () => {
   const featuredProjects = projects.filter((project) => project.featured);
@@ -209,14 +224,23 @@ const Works = () => {
       {featuredProjects.length > 0 && (
         <div className="mt-20 sm:mt-24 flex flex-col gap-10">
           {featuredProjects.map((project) => (
-            <FeaturedProjectCard key={project.name} {...project} />
+            <FeaturedProjectCard
+              key={project.name}
+              {...project}
+              sourceLinks={visibleSourceLinks(project)}
+            />
           ))}
         </div>
       )}
 
       <div className="mt-10 flex flex-wrap gap-7 sm:gap-10 pb-10">
         {otherProjects.map((project, index) => (
-          <ProjectCard key={project.name} index={index} {...project} />
+          <ProjectCard
+            key={project.name}
+            index={index}
+            {...project}
+            sourceLinks={visibleSourceLinks(project)}
+          />
         ))}
       </div>
     </>
