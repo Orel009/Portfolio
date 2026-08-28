@@ -1,12 +1,14 @@
 # Renovation Report
 
-Branch: `master`. Everything through `f931b08` is merged and pushed to origin. The two commits
-below it (Resumes MVP card) are **committed locally only, not pushed** — waiting on your
-confirmation that the OpenAI key is revoked, per the working rule for this round. Base audit:
+Branch: `master`, fully merged and pushed to origin through `583ffe1`. The OpenAI key referenced
+below has since been confirmed revoked and both Resumes MVP repos are private pending the
+clean-history rewrite — that work is tracked separately, not in this repo. Base audit:
 `PORTFOLIO_AUDIT.md`.
 
 ```
-7d294d1 feat: add Resumes MVP project card, support multi-repo source links   <- not pushed
+583ffe1 fix: shrink project-card image placeholders on mobile
+df465ee docs: update renovation report — Resumes MVP card + repo cleanup
+7d294d1 feat: add Resumes MVP project card, support multi-repo source links
 f931b08 docs: update renovation report with follow-up round
 2fd0639 feat: wire real CV/LinkedIn, add AI role, restore Earth + Stars with guards
 84faa48 docs: add renovation report
@@ -206,6 +208,34 @@ For **each** repo (from inside `C:\Users\Orell\Desktop\ResumesMVP` and separatel
 
 ---
 
+## Third follow-up round — mobile spacing bug: Skills → Contact
+
+You reported a large empty-looking region on mobile between the end of Skills and the start of Contact, with two working hypotheses to check: leftover spacing from a removed section, or the Earth canvas reserving fixed height it didn't need on phones.
+
+**Diagnosed before changing anything, as asked — both hypotheses were wrong:**
+
+- **Not a spacing bug at all.** Measured the literal gap (`nextSection.top − prevSection.bottom`) between every one of the 6 adjacent-section boundaries at 320/375/414px: Hero→About, About→Experience, Experience→Education, Education→Skills, **Skills→Projects**, and **Projects→Contact** were all exactly **0px**, at every width. Every section's own `py-section-y` padding already abuts the next section with no unowned space anywhere — there was never a stray margin or leftover wrapper to remove.
+- **Not the Earth canvas.** Screenshotted the settled Contact section on mobile: Earth renders at full width, stacks correctly above the form, no oversized reserved space. (An early rapid-scroll test pass briefly *looked* like a broken, overlapping Contact layout — that turned out to be a timing artifact in my own test script, jumping between scroll positions faster than a 1-second framer-motion entrance transition could finish, not a real bug. Re-verified with a proper settle wait and it's correct: `formWrapper`/`earthWrapper` both `x:20, w:335`, sequential, zero overlap.)
+- **What it actually was:** the Projects section sits between Skills and Contact — real content, not empty space by definition — but its three project cards (none has a real screenshot yet) each render a fixed-height `ImagePlaceholder`: 220px (featured cards) or 230px (grid card), full viewport width on mobile. On desktop that box sits *beside* the card's text (`lg:flex-row`), costing no extra scroll length; on mobile the card stacks (`flex-col`), so the same low-information block sits *above* all the dense text, three times in a row. Confirmed visually (screenshot at the transition into Projects) — a large flat-color box with only a small centered project name reads as "empty" even though it's technically inside a content section. This is exactly why it was mobile-specific: the placeholder's cost is only paid in scroll length once it can't share horizontal space with content.
+
+**Fix — the cause, not the gap itself:** the placeholder-only image slot (real images are completely untouched, at every breakpoint) is now shorter below the breakpoint where each card's own layout stacks: `h-28` (112px) below `lg` for `FeaturedProjectCard`, `h-24` (96px) below `sm` for the grid `ProjectCard` — reusing each component's own existing stacking breakpoint rather than inventing a new one or subtracting a compensating negative margin.
+
+**Verified in a real browser:**
+
+| Width | All 6 boundary gaps | Overflow | Overlap | Total page height |
+|---|---|---|---|---|
+| 320px | all 0px (unchanged) | none | none | 13,847px → **13,497px** |
+| 375px | all 0px (unchanged) | none | none | 12,330px → **11,980px** |
+| 414px | all 0px (unchanged) | none | none | 11,657px → **11,307px** |
+| 768px | all 0px (unchanged) | none | none | 9,372px (only the 2 featured placeholders shrink here — the grid card is already past its `sm` breakpoint, back to full 230px) |
+| 1440px | all 0px (unchanged) | none | none | 9,123px (past every card's stacking breakpoint — fully unaffected, matches pre-fix desktop) |
+
+The 350px reduction at 320/375/414px is not a rounded estimate — it's exactly 2×108px (two featured cards, 220px→112px) + 1×134px (one grid card, 230px→96px), matching the arithmetic precisely.
+
+**Earth confirmed still interactive on desktop**, not just unaffected on paper: screenshotted its canvas before and after simulating a mouse-drag rotation at 1440px — the model visibly rotated between the two captures. 3 canvases mount at Contact (Hero + Earth + Stars), zero console errors, matching pre-fix behavior exactly (this fix only touches `Works.jsx`, nothing in `Contact.jsx`/`Earth.jsx`/`Stars.jsx`).
+
+---
+
 ## Responsive verification — real numbers
 
 Measured via headless Chrome against the production build (`npm run build` + `vite preview`), after the follow-up round landed — this is the final, authoritative pass:
@@ -275,7 +305,7 @@ The restored starfield sits behind the entire Contact section on every breakpoin
 
 Resolved since the first draft of this report: the real CV is in place, and your LinkedIn URL is wired in. Still open:
 
-0. **Blocking the push:** confirm back here once (a) the OpenAI key is revoked in your OpenAI dashboard and (b) both `ResumesMVP` and `ResumesMVPServer` have been re-uploaded with clean history (steps above, yours to run). Once you confirm, I need to: flip `sourceLinksVerified: true` on the Resumes MVP entry in `src/constants/index.js`, then push `master` (currently 2 commits ahead of origin, held back specifically for this).
+0. **Resumes MVP links, still pending.** The OpenAI key is confirmed revoked and both repos are currently private while you rewrite their history (steps tracked outside this repo, since they're not part of the portfolio). Once both are public again with clean history: flip `sourceLinksVerified: true` on the Resumes MVP entry in `src/constants/index.js`, actually fetch both repo URLs to confirm they resolve (not just assume), then commit and push.
 1. **quant-center.com link.** It's live but sits behind HTTP Basic Auth. I did not link it, per your instruction. If you want it linked, my suggestion: a small secondary badge/link on the Financial Center card labeled something like **"Live Site (password-protected)"** with a lock glyph, rather than an unlabeled "Live Demo" button that would surprise a visitor with an unexpected credential prompt. Say the word and I'll wire it in.
 2. **11 skills/roles with no available icon asset:** NestJS, FastAPI (Python), Entity Framework Core, Vite, Next.js, Claude, Gemini, PostgreSQL, Caddy, Swagger/OpenAPI (render as text-only pills), plus **AI Integration Engineer** (renders with a small "AI" badge placeholder instead of a matching icon). If you have or want me to source proper icons for any of these, say which ones.
 3. **Three existing icon assets kept but currently unused, pending your call:**
