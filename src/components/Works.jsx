@@ -71,7 +71,11 @@ SourceLinksRow.propTypes = {
 
 // Standing in for a real screenshot when a project has none (proprietary
 // work, or no snapshot supplied yet) — an on-brand placeholder rather than
-// a broken <img> or a blank box.
+// a broken <img> or a blank box. Its wrapper is shorter below the
+// breakpoint where cards stack (image above text, full viewport width)
+// than above it (image beside text, sharing horizontal space) — a
+// low-information placeholder costs real scroll length once it can't
+// share width with content; a real image keeps its full height everywhere.
 const ImagePlaceholder = ({ name }) => (
   <div className="w-full h-full rounded-2xl bg-black-gradient flex items-center justify-center px-4">
     <span className="text-secondary text-fluid-label uppercase tracking-wider text-center">
@@ -95,7 +99,7 @@ const ProjectCard = ({ index, name, description, tags, image, sourceLinks }) => 
         }}
         className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full"
       >
-        <div className="relative w-full h-[230px]">
+        <div className={`relative w-full ${image ? "h-[230px]" : "h-24 sm:h-[230px]"}`}>
           {image ? (
             <img
               src={image}
@@ -139,7 +143,11 @@ const FeaturedProjectCard = ({
     variants={fadeIn("up", "spring", 0, 0.75)}
     className="w-full bg-tertiary rounded-2xl p-6 sm:p-10 flex flex-col lg:flex-row gap-8"
   >
-    <div className="relative w-full lg:w-2/5 h-[220px] shrink-0">
+    <div
+      className={`relative w-full lg:w-2/5 shrink-0 ${
+        image ? "h-[220px]" : "h-28 lg:h-[220px]"
+      }`}
+    >
       {image ? (
         <img
           src={image}
